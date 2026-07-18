@@ -3,10 +3,8 @@
 */
 
 :root {
-  --bg: #eee;
   --accent: #1f8a5b;
   --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  --radius: 10px;
 
   font-size: 15px;
   line-height: 1.6;
@@ -19,7 +17,7 @@
 }
 
 body {
-  background: var(--bg);
+  background: #eee;
 }
 
 
@@ -94,7 +92,7 @@ button {
   border-color: #eee;
 }
 .btn--ghost:hover {
-  background: var(--bg);
+  background: #eee;
 }
 
 .btn--block {

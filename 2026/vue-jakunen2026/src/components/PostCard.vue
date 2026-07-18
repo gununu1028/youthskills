@@ -34,7 +34,7 @@ defineProps({
   display: block;
   background: #fff;
   border: 1px solid #eee;
-  border-radius: var(--radius);
+  border-radius: 10px;
   overflow: hidden;
   box-shadow: var(--shadow);
   transition: transform 0.15s, box-shadow 0.15s;

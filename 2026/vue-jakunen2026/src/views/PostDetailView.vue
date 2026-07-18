@@ -67,7 +67,7 @@ function goBack() {
   width: 100%;
   height: 220px;
   object-fit: cover;
-  border-radius: var(--radius);
+  border-radius: 10px;
   margin-bottom: 16px;
 }
 

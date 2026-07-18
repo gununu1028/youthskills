@@ -46,7 +46,7 @@ defineProps({
 }
 
 .comment {
-  background: var(--bg);
+  background: #eee;
   border-radius: 8px;
   padding: 12px 14px;
 }
