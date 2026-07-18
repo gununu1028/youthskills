@@ -52,7 +52,7 @@ async function handleSubmit() {
 
 <template>
   <div class="new-post">
-    <button class="btn btn--ghost" @click="router.push('/')">← 戻る</button>
+    <button class="btn" @click="router.push('/')">← 戻る</button>
     <h1 class="new-post__title">新規投稿</h1>
 
     <form class="new-post__form" @submit.prevent="handleSubmit">

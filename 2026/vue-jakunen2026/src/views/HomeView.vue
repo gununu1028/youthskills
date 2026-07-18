@@ -90,8 +90,7 @@ const visiblePosts = computed(() => {
 
 <style scoped>
 .home__toolbar {
-  display: flex;
-  justify-content: flex-end;
+  text-align: right;
   margin-bottom: 16px;
 }
 

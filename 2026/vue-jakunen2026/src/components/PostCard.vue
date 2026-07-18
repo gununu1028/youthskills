@@ -32,17 +32,7 @@ defineProps({
 <style scoped>
 .post-card {
   display: block;
-  background: #fff;
   border: 1px solid #eee;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: var(--shadow);
-  transition: transform 0.15s, box-shadow 0.15s;
-}
-
-.post-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
 }
 
 .post-card__image {
@@ -58,7 +48,6 @@ defineProps({
 .post-card__title {
   margin: 8px 0 4px;
   font-size: 17px;
-  line-height: 1.4;
 }
 
 .post-card__author {

@@ -33,7 +33,7 @@ function goBack() {
 
 <template>
   <div class="detail">
-    <button class="btn btn--ghost" @click="goBack">← 戻る</button>
+    <button class="btn" @click="goBack">← 戻る</button>
 
     <p v-if="loading" class="state-message">読み込み中...</p>
     <p v-else-if="error" class="state-message">{{ error }}</p>
@@ -67,13 +67,11 @@ function goBack() {
   width: 100%;
   height: 220px;
   object-fit: cover;
-  border-radius: 10px;
   margin-bottom: 16px;
 }
 
 .detail__title {
   font-size: 22px;
-  line-height: 1.4;
   margin: 10px 0;
 }
 
@@ -83,6 +81,5 @@ function goBack() {
 
 .detail__content {
   white-space: pre-wrap;
-  line-height: 1.8;
 }
 </style>
