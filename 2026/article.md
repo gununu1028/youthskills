@@ -5,7 +5,7 @@
 
 ## 1. ファイル構成を確認する
 
-実装前に、コンポーネント（部品）の地図を描きましょう。
+
 
 ```
 App.vue（全体の枠・ヘッダー・500px中央寄せ）
@@ -47,7 +47,7 @@ src/
 
 ### 5-0. 必要なファイルを空で作る
 
-星印 ☆ のファイルを空で作る。
+星印 ⭐️ のファイルを空で作る。
 無印のファイルについては、存在することを確認する。
 
 ```
@@ -56,17 +56,17 @@ src/
 ├── App.vue
 ├── style.css
 ├── api/
-│   └── index.js ☆
+│   └── index.js ⭐️
 ├── router/
-│   └── index.js ☆
+│   └── index.js ⭐️
 ├── components/
-│   ├── PostCard.vue ☆
-│   ├── PostFilters.vue ☆
-│   └── CommentList.vue ☆
+│   ├── PostCard.vue ⭐️
+│   ├── PostFilters.vue ⭐️
+│   └── CommentList.vue ⭐️
 └── views/
-    ├── HomeView.vue ☆
-    ├── PostDetailView.vue ☆
-    └── NewPostView.vue ☆
+    ├── HomeView.vue ⭐️
+    ├── PostDetailView.vue ⭐️
+    └── NewPostView.vue ⭐️
 ```
 
 
