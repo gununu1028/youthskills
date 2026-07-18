@@ -4,10 +4,7 @@
 
 :root {
   --bg: #f4f5f7;
-  --text-sub: #666;
-  --border: #eee;
   --accent: #1f8a5b;
-  --accent-soft: #eee;
   --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   --radius: 10px;
 
@@ -94,7 +91,7 @@ button {
 
 .btn--ghost {
   background: #fff;
-  border-color: var(--border);
+  border-color: #eee;
 }
 .btn--ghost:hover {
   background: var(--bg);
@@ -114,7 +111,7 @@ button {
   margin-bottom: 6px;
   font-size: 13px;
   font-weight: 600;
-  color: var(--text-sub);
+  color: #666;
 }
 
 .field__required {
@@ -127,7 +124,7 @@ button {
 .select {
   width: 100%;
   padding: 10px 12px;
-  border: 1px solid var(--border);
+  border: 1px solid #eee;
   border-radius: 8px;
   font: inherit;
   background: #fff;
@@ -146,7 +143,7 @@ button {
   border-radius: 999px;
   font-size: 12px;
   font-weight: 600;
-  background: var(--accent-soft);
+  background: #eee;
   color: #176d48;
 }
 
@@ -156,7 +153,7 @@ button {
   align-items: center;
   gap: 12px;
   font-size: 13px;
-  color: var(--text-sub);
+  color: #666;
 }
 
 .meta__item {
@@ -168,5 +165,5 @@ button {
 .state-message {
   padding: 40px 20px;
   text-align: center;
-  color: var(--text-sub);
+  color: #666;
 }

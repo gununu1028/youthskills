@@ -33,7 +33,7 @@ defineProps({
 .post-card {
   display: block;
   background: #fff;
-  border: 1px solid var(--border);
+  border: 1px solid #eee;
   border-radius: var(--radius);
   overflow: hidden;
   box-shadow: var(--shadow);
@@ -62,7 +62,7 @@ defineProps({
 }
 
 .post-card__author {
-  color: var(--text-sub);
+  color: #666;
   font-size: 13px;
   margin-bottom: 10px;
 }
