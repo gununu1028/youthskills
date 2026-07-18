@@ -30,8 +30,8 @@ defineProps({
       <p class="post-card__author">{{ post.author }}</p>
       <div class="meta">
         <!-- いいね数とコメント数 -->
-        <span class="meta__item">♥ {{ post.likes }}</span>
-        <span class="meta__item">💬 {{ post.comments_count }}</span>
+        <span class="meta__item">{{ post.likes }} いいね</span>
+        <span class="meta__item">{{ post.comments_count }} コメント</span>
       </div>
     </div>
   </RouterLink>

@@ -59,7 +59,7 @@ function goBack() {
       <h1 class="detail__title">{{ post.title }}</h1>
       <div class="meta detail__meta">
         <span class="meta__item">投稿者：{{ post.author }}</span>
-        <span class="meta__item">♥ {{ post.likes }}</span>
+        <span class="meta__item">{{ post.likes }} いいね</span>
       </div>
       <p class="detail__content">{{ post.content }}</p>
 
