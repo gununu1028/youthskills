@@ -71,7 +71,6 @@ button {
   gap: 6px;
   padding: 10px 16px;
   border: 1px solid transparent;
-  border-radius: 8px;
   font-weight: 600;
 }
 
@@ -123,7 +122,6 @@ button {
   width: 100%;
   padding: 10px 12px;
   border: 1px solid #eee;
-  border-radius: 8px;
   font: inherit;
   background: #fff;
   color: #000;
