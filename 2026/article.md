@@ -51,8 +51,10 @@ src/
 ├── main.js
 ├── App.vue
 ├── style.css
-├── api/index.js
-├── router/index.js
+├── api/
+│   └── index.js
+├── router
+│   └── index.js
 ├── components/
 │   ├── PostCard.vue
 │   ├── PostFilters.vue
