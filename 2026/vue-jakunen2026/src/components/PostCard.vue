@@ -1,6 +1,11 @@
+<!--
+  PostCard.vue … 一覧に並ぶ投稿カード1枚分の見た目。
+  親（HomeView）から post を受け取って表示するだけの部品。
+-->
 <script setup>
 import { RouterLink } from 'vue-router'
 
+// defineProps … 親から受け取るデータの定義
 defineProps({
   post: {
     type: Object,
@@ -10,7 +15,9 @@ defineProps({
 </script>
 
 <template>
+  <!-- カード全体をリンクにして、詳細画面（/posts/投稿ID）へ飛ばす -->
   <RouterLink :to="`/posts/${post.id}`" class="post-card">
+    <!-- 画像がある投稿だけサムネイルを表示 -->
     <img
       v-if="post.image_url"
       :src="post.image_url"
@@ -22,6 +29,7 @@ defineProps({
       <h2 class="post-card__title">{{ post.title }}</h2>
       <p class="post-card__author">{{ post.author }}</p>
       <div class="meta">
+        <!-- いいね数とコメント数 -->
         <span class="meta__item">♥ {{ post.likes }}</span>
         <span class="meta__item">💬 {{ post.comments_count }}</span>
       </div>
