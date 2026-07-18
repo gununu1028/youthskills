@@ -69,21 +69,15 @@ src/
 
 ### 5-1. API層をまとめる（`src/api/index.js`）
 
-API呼び出しを画面の中に直接書くと、同じ `fetch` があちこちに散らばります。
-**1つのファイルにまとめる**と、URLの変更にも強く、テストもしやすくなります。
+サンプルコード：[`src/api/index.js`](https://github.com/gununu1028/young-client/blob/master/2026/vue-jakunen2026/src/api/index.js)
 
-👉 完成コード：[`src/api/index.js`](https://github.com/gununu1028/young-client/blob/master/2026/vue-jakunen2026/src/api/index.js)
 
-ポイント：
-- `res.ok`（200番台か）をチェックし、失敗なら例外を投げる
-- POST では `Content-Type: application/json` と `JSON.stringify` を忘れない
-- `fetchPosts()` のほか、`fetchPost(id)`・`fetchCategories()` も同じ形で用意する
 
 ### 5-2. ルーターで画面を切り替える（`src/router/index.js`）
 
 URL と画面の対応表を作ります。
 
-👉 完成コード：[`src/router/index.js`](https://github.com/gununu1028/young-client/blob/master/2026/vue-jakunen2026/src/router/index.js)
+👉 サンプルコード：[`src/router/index.js`](https://github.com/gununu1028/young-client/blob/master/2026/vue-jakunen2026/src/router/index.js)
 
 > **注意点1**：`/posts/new` を `/posts/:id` より **上に書く**。
 > 順番が逆だと `new` が「id = new」と解釈されてしまいます。
@@ -99,7 +93,7 @@ URL と画面の対応表を作ります。
 
 `App.vue` はヘッダーと本文の入れ物です。中身は `RouterView` が URL に応じて差し替えます。
 
-👉 完成コード：[`src/App.vue`](https://github.com/gununu1028/young-client/blob/master/2026/vue-jakunen2026/src/App.vue) ／ [`src/style.css`](https://github.com/gununu1028/young-client/blob/master/2026/vue-jakunen2026/src/style.css)
+👉 サンプルコード：[`src/App.vue`](https://github.com/gununu1028/young-client/blob/master/2026/vue-jakunen2026/src/App.vue) ／ [`src/style.css`](https://github.com/gununu1028/young-client/blob/master/2026/vue-jakunen2026/src/style.css)
 
 「横幅500px・中央寄せ」は CSS の `width: 500px` と `margin: 0 auto`（左右autoで中央寄せ）で実現します。
 
@@ -112,7 +106,7 @@ URL と画面の対応表を作ります。
 3. その状態から「表示する投稿」を計算する
 4. 結果を `PostCard` で並べる。0件ならメッセージ
 
-👉 完成コード：[`src/views/HomeView.vue`](https://github.com/gununu1028/young-client/blob/master/2026/vue-jakunen2026/src/views/HomeView.vue)
+👉 サンプルコード：[`src/views/HomeView.vue`](https://github.com/gununu1028/young-client/blob/master/2026/vue-jakunen2026/src/views/HomeView.vue)
 
 **ここが最重要ポイント**：`visiblePosts` を返す `computed` の中で、
 ①カテゴリ絞り込み → ②検索（タイトル・内容の部分一致）→ ③並び替え、を
@@ -128,7 +122,7 @@ URL と画面の対応表を作ります。
 
 親から `v-model` で受け取り、親に返します。Vue 3.4以降の `defineModel` を使うと簡潔です。
 
-👉 完成コード：[`src/components/PostFilters.vue`](https://github.com/gununu1028/young-client/blob/master/2026/vue-jakunen2026/src/components/PostFilters.vue)
+👉 サンプルコード：[`src/components/PostFilters.vue`](https://github.com/gununu1028/young-client/blob/master/2026/vue-jakunen2026/src/components/PostFilters.vue)
 
 - カテゴリは要件どおり **「すべて」を先頭に** 手動で追加し、その後にAPIのカテゴリを並べる
 - `v-model="search"` により、入力と同時に親の `search` が変わる → **リアルタイム検索** が実現
@@ -137,7 +131,7 @@ URL と画面の対応表を作ります。
 
 一覧の1件を表示する部品。クリックで詳細へ飛びます。
 
-👉 完成コード：[`src/components/PostCard.vue`](https://github.com/gununu1028/young-client/blob/master/2026/vue-jakunen2026/src/components/PostCard.vue)
+👉 サンプルコード：[`src/components/PostCard.vue`](https://github.com/gununu1028/young-client/blob/master/2026/vue-jakunen2026/src/components/PostCard.vue)
 
 - `v-if="post.image_url"`：画像があるときだけ `<img>` を表示（無い投稿もある）
 - いいねは `{{ post.likes }}` と **数字を表示するだけ**。ボタンにはしない（要件どおり）
@@ -146,7 +140,7 @@ URL と画面の対応表を作ります。
 
 URLの `:id` を `props` で受け取り、その投稿を取得します。
 
-👉 完成コード：[`src/views/PostDetailView.vue`](https://github.com/gununu1028/young-client/blob/master/2026/vue-jakunen2026/src/views/PostDetailView.vue)
+👉 サンプルコード：[`src/views/PostDetailView.vue`](https://github.com/gununu1028/young-client/blob/master/2026/vue-jakunen2026/src/views/PostDetailView.vue)
 
 - 「戻る」は `router.push('/')` を使う（要件：ライブラリの遷移メソッドで遷移）
 
@@ -155,7 +149,7 @@ URLの `:id` を `props` で受け取り、その投稿を取得します。
 0件のときの分岐がポイントです。`v-if="comments.length === 0"` で「コメントがありません」を出し、
 それ以外は `v-for` で一覧表示します。
 
-👉 完成コード：[`src/components/CommentList.vue`](https://github.com/gununu1028/young-client/blob/master/2026/vue-jakunen2026/src/components/CommentList.vue)
+👉 サンプルコード：[`src/components/CommentList.vue`](https://github.com/gununu1028/young-client/blob/master/2026/vue-jakunen2026/src/components/CommentList.vue)
 
 ### 5-9. 新規投稿画面（`src/views/NewPostView.vue`）
 
@@ -166,7 +160,7 @@ URLの `:id` を `props` で受け取り、その投稿を取得します。
 - 送信中はボタンを無効化し、ラベルを「投稿中...」に
 - 成功したらアラート「投稿が作成されました」→ ホームへ
 
-👉 完成コード：[`src/views/NewPostView.vue`](https://github.com/gununu1028/young-client/blob/master/2026/vue-jakunen2026/src/views/NewPostView.vue)
+👉 サンプルコード：[`src/views/NewPostView.vue`](https://github.com/gununu1028/young-client/blob/master/2026/vue-jakunen2026/src/views/NewPostView.vue)
 
 **要件との対応表**：
 
