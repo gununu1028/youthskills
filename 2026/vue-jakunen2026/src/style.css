@@ -76,7 +76,6 @@ button {
   border: 1px solid transparent;
   border-radius: 8px;
   font-weight: 600;
-  transition: background 0.15s, opacity 0.15s;
 }
 
 .btn--primary {
