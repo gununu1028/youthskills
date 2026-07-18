@@ -9,7 +9,6 @@
   --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   --radius: 10px;
 
-  font-family: system-ui, 'Hiragino Sans', 'Noto Sans JP', sans-serif;
   font-size: 15px;
   line-height: 1.6;
   color: var(--text);
@@ -24,11 +23,6 @@ body {
   background: var(--bg);
 }
 
-h1,
-h2,
-h3 {
-  font-weight: 600;
-}
 
 a {
   color: inherit;
@@ -40,10 +34,7 @@ button {
   cursor: pointer;
 }
 
-img {
-  display: block;
-  max-width: 100%;
-}
+
 
 /* アプリ全体：横幅500px固定・中央配置 */
 #app {
@@ -140,14 +131,6 @@ img {
   font: inherit;
   background: #fff;
   color: var(--text);
-}
-
-.input:focus,
-.textarea:focus,
-.select:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
 .textarea {
