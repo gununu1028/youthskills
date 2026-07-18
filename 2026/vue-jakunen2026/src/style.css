@@ -5,9 +5,7 @@
   --text-sub: #6b7280;
   --border: #e5e7eb;
   --accent: #1f8a5b;
-  --accent-dark: #176d48;
   --accent-soft: #e7f4ee;
-  --danger: #d14343;
   --shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   --radius: 10px;
 
@@ -95,7 +93,7 @@ img {
   color: #fff;
 }
 .btn--primary:hover {
-  background: var(--accent-dark);
+  background: #176d48;
 }
 .btn--primary:disabled {
   background: #b7c3bd;
@@ -129,7 +127,7 @@ img {
 
 .field__required {
   margin-left: 4px;
-  color: var(--danger);
+  color: #d14343;
 }
 
 .input,
@@ -165,7 +163,7 @@ img {
   font-size: 12px;
   font-weight: 600;
   background: var(--accent-soft);
-  color: var(--accent-dark);
+  color: #176d48;
 }
 
 .meta {
