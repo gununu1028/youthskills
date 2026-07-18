@@ -41,7 +41,8 @@ src/
 
 ## 5. 実装する
 
-各ファイルの完成版ソースは GitHub に置いてあります → [`vue-jakunen2026/src/`](https://github.com/gununu1028/young-client/tree/master/2026/vue-jakunen2026/src)。
+各ファイルの完成版ソースはこちらです。
+[`vue-jakunen2026/src/`](https://github.com/gununu1028/young-client/tree/master/2026/vue-jakunen2026/src)
 
 
 ### 5-0. まず必要なファイルを空で全部作る
@@ -53,7 +54,7 @@ src/
 ├── style.css
 ├── api/
 │   └── index.js
-├── router
+├── router/
 │   └── index.js
 ├── components/
 │   ├── PostCard.vue
