@@ -32,7 +32,7 @@ defineProps({
 <style scoped>
 .post-card {
   display: block;
-  background: var(--surface);
+  background: #fff;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
