@@ -47,23 +47,26 @@ src/
 
 ### 5-0. 必要なファイルを空で作る
 
+星印 ☆ のファイルを空で作る。
+無印のファイルについては、存在することを確認する。
+
 ```
 src/
 ├── main.js
 ├── App.vue
 ├── style.css
 ├── api/
-│   └── index.js
+│   └── index.js ☆
 ├── router/
-│   └── index.js
+│   └── index.js ☆
 ├── components/
-│   ├── PostCard.vue
-│   ├── PostFilters.vue
-│   └── CommentList.vue
+│   ├── PostCard.vue ☆
+│   ├── PostFilters.vue ☆
+│   └── CommentList.vue ☆
 └── views/
-    ├── HomeView.vue
-    ├── PostDetailView.vue
-    └── NewPostView.vue
+    ├── HomeView.vue ☆
+    ├── PostDetailView.vue ☆
+    └── NewPostView.vue ☆
 ```
 
 
