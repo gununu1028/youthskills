@@ -45,7 +45,7 @@ src/
 [`vue-jakunen2026/src/`](https://github.com/gununu1028/young-client/tree/master/2026/vue-jakunen2026/src)
 
 
-### 5-0. まず必要なファイルを空で全部作る
+### 5-0. 必要なファイルを空で作る
 
 ```
 src/
