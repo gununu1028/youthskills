@@ -60,64 +60,26 @@ src/
 
 ## 5. 実装する
 
+各ファイルの完成版ソースは GitHub に置いてあります → [`vue-jakunen2026/src/`](https://github.com/gununu1028/young-client/tree/master/2026/vue-jakunen2026/src)。
+以下では各ファイルの**考え方とポイント**だけを説明し、実コードはリンク先を参照してください。
+
 ### 5-1. API層をまとめる（`src/api/index.js`）
 
 API呼び出しを画面の中に直接書くと、同じ `fetch` があちこちに散らばります。
 **1つのファイルにまとめる**と、URLの変更にも強く、テストもしやすくなります。
 
-```js
-const BASE_URL = 'https://youth.m5a.jp/api'
-
-// 投稿一覧を取得する（GET /api/posts）
-export async function fetchPosts() {
-  const res = await fetch(`${BASE_URL}/posts`)
-  if (!res.ok) throw new Error('投稿一覧の取得に失敗しました')
-  return res.json()
-}
-
-// 投稿を作成する（POST /api/posts）
-export async function createPost(payload) {
-  const res = await fetch(`${BASE_URL}/posts`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
-  })
-  // 更新系はステータスコードで成否を判断する
-  if (!res.ok) throw new Error('投稿の作成に失敗しました')
-  return res.json()
-}
-```
+👉 完成コード：[`src/api/index.js`](https://github.com/gununu1028/young-client/blob/master/2026/vue-jakunen2026/src/api/index.js)
 
 ポイント：
 - `res.ok`（200番台か）をチェックし、失敗なら例外を投げる
 - POST では `Content-Type: application/json` と `JSON.stringify` を忘れない
-
-（同様に `fetchPost(id)`、`fetchCategories()` も用意します）
+- `fetchPosts()` のほか、`fetchPost(id)`・`fetchCategories()` も同じ形で用意する
 
 ### 5-2. ルーターで画面を切り替える（`src/router/index.js`）
 
 URL と画面の対応表を作ります。
 
-```js
-import { createRouter, createWebHashHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import PostDetailView from '../views/PostDetailView.vue'
-import NewPostView from '../views/NewPostView.vue'
-
-const routes = [
-  { path: '/', name: 'home', component: HomeView },
-  { path: '/posts/new', name: 'post-new', component: NewPostView },
-  { path: '/posts/:id', name: 'post-detail', component: PostDetailView, props: true },
-]
-
-export const router = createRouter({
-  history: createWebHashHistory(),
-  routes,
-  scrollBehavior() {
-    return { top: 0 } // ページ遷移時に先頭へスクロール
-  },
-})
-```
+👉 完成コード：[`src/router/index.js`](https://github.com/gununu1028/young-client/blob/master/2026/vue-jakunen2026/src/router/index.js)
 
 > **注意点1**：`/posts/new` を `/posts/:id` より **上に書く**。
 > 順番が逆だと `new` が「id = new」と解釈されてしまいます。
@@ -133,31 +95,9 @@ export const router = createRouter({
 
 `App.vue` はヘッダーと本文の入れ物です。中身は `RouterView` が URL に応じて差し替えます。
 
-```vue
-<script setup>
-import { RouterView, RouterLink } from 'vue-router'
-</script>
+👉 完成コード：[`src/App.vue`](https://github.com/gununu1028/young-client/blob/master/2026/vue-jakunen2026/src/App.vue) ／ [`src/style.css`](https://github.com/gununu1028/young-client/blob/master/2026/vue-jakunen2026/src/style.css)
 
-<template>
-  <header class="app-header">
-    <RouterLink to="/" class="app-header__title">かがわコミュニティ</RouterLink>
-  </header>
-  <main class="app-main">
-    <RouterView />
-  </main>
-</template>
-```
-
-「横幅500px・中央寄せ」は CSS で実現します。
-
-```css
-#app {
-  width: 500px;      /* 固定幅 */
-  margin: 0 auto;    /* 左右autoで中央寄せ */
-  min-height: 100vh;
-  background: #fff;
-}
-```
+「横幅500px・中央寄せ」は CSS の `width: 500px` と `margin: 0 auto`（左右autoで中央寄せ）で実現します。
 
 ### 5-4. ホーム画面（`src/views/HomeView.vue`）
 
@@ -168,88 +108,14 @@ import { RouterView, RouterLink } from 'vue-router'
 3. その状態から「表示する投稿」を計算する
 4. 結果を `PostCard` で並べる。0件ならメッセージ
 
-```vue
-<script setup>
-import { ref, computed, onMounted } from 'vue'
-import { fetchPosts, fetchCategories } from '../api'
-import PostCard from '../components/PostCard.vue'
-import PostFilters from '../components/PostFilters.vue'
+👉 完成コード：[`src/views/HomeView.vue`](https://github.com/gununu1028/young-client/blob/master/2026/vue-jakunen2026/src/views/HomeView.vue)
 
-const posts = ref([])          // APIから来た生データ
-const categories = ref([])
-const loading = ref(true)
-
-// ユーザーの操作状態
-const search = ref('')
-const categoryId = ref('all')  // 'all' = すべて
-const sort = ref('newest')     // newest = 新着順（デフォルト）
-
-// 画面が表示されたらデータを取得
-onMounted(async () => {
-  const [postList, categoryList] = await Promise.all([
-    fetchPosts(),
-    fetchCategories(),
-  ])
-  posts.value = postList
-  categories.value = categoryList
-  loading.value = false
-})
-
-// 検索・カテゴリ・並び替えを「組み合わせて」適用する
-const visiblePosts = computed(() => {
-  let result = [...posts.value]
-
-  // ① カテゴリ絞り込み
-  if (categoryId.value !== 'all') {
-    result = result.filter((p) => p.category_id === categoryId.value)
-  }
-
-  // ② 検索（タイトル・内容の部分一致）
-  const keyword = search.value.trim().toLowerCase()
-  if (keyword) {
-    result = result.filter(
-      (p) =>
-        p.title.toLowerCase().includes(keyword) ||
-        p.content.toLowerCase().includes(keyword),
-    )
-  }
-
-  // ③ 並び替え
-  if (sort.value === 'likes') {
-    result.sort((a, b) => b.likes - a.likes)   // いいね数の多い順
-  } else {
-    result.sort((a, b) => b.id - a.id)          // 新着順（IDの大きい順）
-  }
-
-  return result
-})
-</script>
-```
-
-**ここが最重要ポイント**：`computed` の中で①→②→③を順番に適用しているので、
-検索とカテゴリと並び替えが自然に **組み合わさって** 動きます。
+**ここが最重要ポイント**：`visiblePosts` を返す `computed` の中で、
+①カテゴリ絞り込み → ②検索（タイトル・内容の部分一致）→ ③並び替え、を
+順番に適用しています。こうすると検索とカテゴリと並び替えが自然に **組み合わさって** 動き、
 「検索したら並び順が崩れる」といったバグが起きません。
 
 テンプレート側では、状態が0件かどうかでメッセージを出し分けます。
-
-```vue
-<template>
-  <PostFilters
-    v-model:search="search"
-    v-model:category-id="categoryId"
-    v-model:sort="sort"
-    :categories="categories"
-  />
-
-  <p v-if="loading" class="state-message">読み込み中...</p>
-  <p v-else-if="visiblePosts.length === 0" class="state-message">
-    検索結果が見つかりませんでした
-  </p>
-  <div v-else class="home__list">
-    <PostCard v-for="post in visiblePosts" :key="post.id" :post="post" />
-  </div>
-</template>
-```
 
 - `v-for` で投稿を繰り返し表示。`:key` には一意な `id` を必ず指定
 - `v-if / v-else-if / v-else` で「読み込み中」「0件」「一覧」を出し分け
@@ -258,34 +124,7 @@ const visiblePosts = computed(() => {
 
 親から `v-model` で受け取り、親に返します。Vue 3.4以降の `defineModel` を使うと簡潔です。
 
-```vue
-<script setup>
-defineProps({
-  categories: { type: Array, default: () => [] },
-})
-
-// 親と双方向にやりとりする値
-const search = defineModel('search', { type: String, default: '' })
-const categoryId = defineModel('categoryId', { default: 'all' })
-const sort = defineModel('sort', { type: String, default: 'newest' })
-</script>
-
-<template>
-  <input v-model="search" type="search" placeholder="タイトル・内容で検索" />
-
-  <select v-model="categoryId">
-    <option value="all">すべて</option>
-    <option v-for="c in categories" :key="c.id" :value="c.id">
-      {{ c.name }}
-    </option>
-  </select>
-
-  <select v-model="sort">
-    <option value="newest">新着順</option>
-    <option value="likes">いいね数順</option>
-  </select>
-</template>
-```
+👉 完成コード：[`src/components/PostFilters.vue`](https://github.com/gununu1028/young-client/blob/master/2026/vue-jakunen2026/src/components/PostFilters.vue)
 
 - カテゴリは要件どおり **「すべて」を先頭に** 手動で追加し、その後にAPIのカテゴリを並べる
 - `v-model="search"` により、入力と同時に親の `search` が変わる → **リアルタイム検索** が実現
@@ -294,25 +133,7 @@ const sort = defineModel('sort', { type: String, default: 'newest' })
 
 一覧の1件を表示する部品。クリックで詳細へ飛びます。
 
-```vue
-<script setup>
-import { RouterLink } from 'vue-router'
-defineProps({ post: { type: Object, required: true } })
-</script>
-
-<template>
-  <RouterLink :to="`/posts/${post.id}`" class="post-card">
-    <img v-if="post.image_url" :src="post.image_url" :alt="post.title" />
-    <span class="badge">{{ post.category }}</span>
-    <h2>{{ post.title }}</h2>
-    <p>{{ post.author }}</p>
-    <div class="meta">
-      <span>♥ {{ post.likes }}</span>
-      <span>💬 {{ post.comments_count }}</span>
-    </div>
-  </RouterLink>
-</template>
-```
+👉 完成コード：[`src/components/PostCard.vue`](https://github.com/gununu1028/young-client/blob/master/2026/vue-jakunen2026/src/components/PostCard.vue)
 
 - `v-if="post.image_url"`：画像があるときだけ `<img>` を表示（無い投稿もある）
 - いいねは `{{ post.likes }}` と **数字を表示するだけ**。ボタンにはしない（要件どおり）
@@ -321,61 +142,16 @@ defineProps({ post: { type: Object, required: true } })
 
 URLの `:id` を `props` で受け取り、その投稿を取得します。
 
-```vue
-<script setup>
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import { fetchPost } from '../api'
-import CommentList from '../components/CommentList.vue'
-
-const props = defineProps({ id: { type: [String, Number], required: true } })
-const router = useRouter()
-const post = ref(null)
-
-onMounted(async () => {
-  post.value = await fetchPost(props.id)
-})
-
-function goBack() {
-  router.push('/')  // ライブラリの遷移メソッドで戻る
-}
-</script>
-
-<template>
-  <button @click="goBack">← 戻る</button>
-  <article v-if="post">
-    <img v-if="post.image_url" :src="post.image_url" />
-    <span class="badge">{{ post.category }}</span>
-    <h1>{{ post.title }}</h1>
-    <p>投稿者：{{ post.author }} ／ ♥ {{ post.likes }}</p>
-    <p>{{ post.content }}</p>
-    <CommentList :comments="post.comments" />
-  </article>
-</template>
-```
+👉 完成コード：[`src/views/PostDetailView.vue`](https://github.com/gununu1028/young-client/blob/master/2026/vue-jakunen2026/src/views/PostDetailView.vue)
 
 - 「戻る」は `router.push('/')` を使う（要件：ライブラリの遷移メソッドで遷移）
 
 ### 5-8. コメント一覧の部品（`src/components/CommentList.vue`）
 
-0件のときの分岐がポイントです。
+0件のときの分岐がポイントです。`v-if="comments.length === 0"` で「コメントがありません」を出し、
+それ以外は `v-for` で一覧表示します。
 
-```vue
-<script setup>
-defineProps({ comments: { type: Array, default: () => [] } })
-</script>
-
-<template>
-  <h3>コメント</h3>
-  <p v-if="comments.length === 0">コメントがありません</p>
-  <ul v-else>
-    <li v-for="(comment, index) in comments" :key="index">
-      <p class="author">{{ comment.author }}</p>
-      <p>{{ comment.body }}</p>
-    </li>
-  </ul>
-</template>
-```
+👉 完成コード：[`src/components/CommentList.vue`](https://github.com/gununu1028/young-client/blob/master/2026/vue-jakunen2026/src/components/CommentList.vue)
 
 ### 5-9. 新規投稿画面（`src/views/NewPostView.vue`）
 
@@ -386,81 +162,7 @@ defineProps({ comments: { type: Array, default: () => [] } })
 - 送信中はボタンを無効化し、ラベルを「投稿中...」に
 - 成功したらアラート「投稿が作成されました」→ ホームへ
 
-```vue
-<script setup>
-import { ref, reactive, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import { fetchCategories, createPost } from '../api'
-
-const router = useRouter()
-const categories = ref([])
-const submitting = ref(false)
-
-const form = reactive({
-  title: '', content: '', author: '', category_id: '', image_url: '',
-})
-
-onMounted(async () => {
-  categories.value = await fetchCategories()
-})
-
-// すべての必須項目が入力されているか
-const isValid = computed(() =>
-  form.title.trim() !== '' &&
-  form.content.trim() !== '' &&
-  form.author.trim() !== '' &&
-  form.category_id !== '',
-)
-
-async function handleSubmit() {
-  if (!isValid.value || submitting.value) return
-  submitting.value = true            // 送信中フラグON
-  try {
-    await createPost({
-      title: form.title,
-      content: form.content,
-      author: form.author,
-      category_id: Number(form.category_id),
-      image_url: form.image_url,
-    })
-    alert('投稿が作成されました')
-    router.push('/')                 // ホームへ戻る
-  } catch (e) {
-    alert(e.message)
-  } finally {
-    submitting.value = false         // 成否に関わらずフラグOFF
-  }
-}
-</script>
-
-<template>
-  <form @submit.prevent="handleSubmit">
-    <label>投稿タイトル <span>*</span></label>
-    <input v-model="form.title" type="text" required />
-
-    <label>投稿内容 <span>*</span></label>
-    <textarea v-model="form.content" required></textarea>
-
-    <label>投稿者名 <span>*</span></label>
-    <input v-model="form.author" type="text" required />
-
-    <label>カテゴリ <span>*</span></label>
-    <select v-model="form.category_id" required>
-      <option value="" disabled>選択してください</option>
-      <option v-for="c in categories" :key="c.id" :value="c.id">
-        {{ c.name }}
-      </option>
-    </select>
-
-    <label>画像URL（任意）</label>
-    <input v-model="form.image_url" type="url" />
-
-    <button type="submit" :disabled="!isValid || submitting">
-      {{ submitting ? '投稿中...' : '投稿する' }}
-    </button>
-  </form>
-</template>
-```
+👉 完成コード：[`src/views/NewPostView.vue`](https://github.com/gununu1028/young-client/blob/master/2026/vue-jakunen2026/src/views/NewPostView.vue)
 
 **要件との対応表**：
 
