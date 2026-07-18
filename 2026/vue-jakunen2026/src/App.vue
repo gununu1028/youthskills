@@ -1,7 +1,12 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import { RouterView, RouterLink } from 'vue-router'
 </script>
 
 <template>
-  <HelloWorld />
+  <header class="app-header">
+    <RouterLink to="/" class="app-header__title">かがわコミュニティ</RouterLink>
+  </header>
+  <main class="app-main">
+    <RouterView />
+  </main>
 </template>
